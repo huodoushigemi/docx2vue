@@ -3,6 +3,8 @@ import 'uno.css'
 import VueRevealEffect from 'vue-reveal-effect'
 import App from './App.vue'
 
+window.addEventListener('appinstalled', () => console.log('appinstalled'))
+
 // service worker
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 useRegisterSW({

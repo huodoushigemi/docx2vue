@@ -4,8 +4,9 @@
     <img w12 h12 src="https://huodoushigemi.github.io/vue-reveal-effect/assets/Microsoft-Word.80420470.svg" />
     <!-- <img w10 src="https://v2.vuejs.org/images/logo.svg" /> -->
     <div flex-1 />
+    <img src="https://img.shields.io/github/stars/huodoushigemi/docx2vue.svg?style=flat-square" />
     <a href="https://github.com/huodoushigemi/doc2vue" target="_blank"><img w10 src="./assets/github.svg" /></a>
-    <Button>下载</Button>
+    <Button @click="prompt">下载</Button>
   </header>
 
   <main wrap justify-evenly>
@@ -34,7 +35,7 @@
 
     <article min-w75 px4 v-once>
       <h2>下载</h2>
-      <Button>下载 doc2vue.exe</Button>
+      <Button @click="prompt">下载</Button>
       <div mt1 text-xs c-gray>Windows 64 位</div>
       <h2>示例</h2>
       <Sample v-reveal-effect name="exmaple.doc" desc="示例文件" />
@@ -43,10 +44,9 @@
     </article>
   </main>
 
+  <!-- prettier-ignore -->
   <footer col fcc mt8 h40 bg-gray-300 v-once>
-    <p>
-      <b>Last updated: {{ last_updated }}</b>
-    </p>
+    <p><b>Last updated: {{ last_updated }}</b></p>
     <p><a c-inherit href="https://github.com/huodoushigemi/doc2vue" target="_blank">Please give a ⭐️ if this project helped you!</a></p>
   </footer>
 </template>
@@ -57,6 +57,7 @@ import { refDefault, useDropZone } from '@vueuse/core'
 import Sample from './components/File.vue'
 import Button from './components/Button.vue'
 import SFC from './components/SFC.vue'
+import { usePwa } from './hooks'
 
 // 转换
 import { getFiles } from './utils'
@@ -77,6 +78,7 @@ const MonacoEditor = defineAsyncComponent(async () => {
 })
 
 const last_updated = new Date(__DATE__).toLocaleString()
+const { prompt, installed } = usePwa()
 
 const dropRef = ref<HTMLElement>()
 const { isOverDropZone } = useDropZone(dropRef, () => {})
