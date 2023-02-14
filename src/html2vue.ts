@@ -1,6 +1,6 @@
 import { isSimpleIdentifier } from '@vue/compiler-core'
 import { isTextNode } from './docx2html'
-import { transformInterpolation } from './utils'
+import { transformInterpolation, transformInterpolation1 } from './utils'
 
 export default async function html2vue(document: Document) {
   const isInterpolation = (s: string) => s.match(/\{\{\s*(.*?)\s*\}\}/)?.[1]
@@ -18,7 +18,9 @@ export default async function html2vue(document: Document) {
       const anchor = node.nextSibling
       const exp = isInterpolation(txt)
       if (!exp) continue
-      node.textContent = await transformInterpolation(txt)
+      node.textContent = await transformInterpolation1(txt)
+      // todo
+      console.log(node.textContent)
       const vari = isSimpleIdentifier(exp) ? exp : null
       if (!vari) continue
       vars.add(vari)
@@ -38,7 +40,7 @@ export default async function html2vue(document: Document) {
         node.parentNode!.removeChild(node)
         const matched = txt.match(/(.*?)({{.*?}})(.*)/)!
         p.insertBefore(document.createTextNode(matched[1]), anchor)
-        p.insertBefore(addAttributes(document.createElement('span'), vari, await transformInterpolation(matched[2])), anchor)
+        p.insertBefore(addAttributes(document.createElement('span'), vari, await transformInterpolation1(matched[2])), anchor)
         p.insertBefore(document.createTextNode(matched[3]), anchor) // todo
       }
     }
@@ -63,8 +65,23 @@ export default {
   methods: {
     onInput({ target }) {
       const prop = target.getAttribute('name')
+      this.set(prop, target.textContent)
+    },
+    getPaths(k) {
+      return k.replace(/\[(.+?)\]/, '.$1').split('.')
+    },
+    get(k) {
+      return this.getPaths(k).reduce((o, k) => o?.[k], this.data)
+    },
+    set(k, v) {
+      const ks = this.getPaths(k)
+      const prop = ks.shift()
+      while (k = ks.pop()) (vv => (v = typeof k === 'number' ? [] : {})[k] = vv)(v)
+      this._set(prop, v)
+    },
+    _set(prop, val) {
       if (this.$set) this.$set(this.data, prop, target.textContent)
-      else this.data[prop] = target.textContent
+      else this.data[prop] = val
     }
   }
 }

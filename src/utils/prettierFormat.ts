@@ -1,3 +1,4 @@
+import type { Options } from 'prettier'
 import prettier from 'prettier/esm/standalone.mjs'
 import parserBabel from 'prettier/esm/parser-babel.mjs'
 import parserHtml from 'prettier/esm/parser-html.mjs'
@@ -12,7 +13,7 @@ const config = {
   vueIndentScriptAndStyle: false
 }
 
-export function prettierFormat(str: string, options: any) {
+export function prettierFormat(str: string, options?: Options) {
   return prettier.format(str, {
     parse: 'babel',
     ...config,
