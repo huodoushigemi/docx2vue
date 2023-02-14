@@ -1,0 +1,1 @@
+import{T as a,P as t,_ as i}from"./prettier-e74c6c92.js";const n={semi:!1,parser:"vue",arrowParens:"avoid",trailingComma:"none",htmlWhitespaceSensitivity:"ignore",printWidth:1/0,vueIndentScriptAndStyle:!1};function l(r,e){return a.format(r,{parse:"babel",...n,...e,plugins:[t,i,(e==null?void 0:e.plugins)||[]]})}export{l as default,l as prettierFormat};
