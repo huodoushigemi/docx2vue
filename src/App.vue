@@ -13,7 +13,7 @@
     <!-- 预览区 -->
     <article ref="dropRef" relative my4 min-w595pt min-h-842pt bg-white z-1 style="box-shadow: 0px 5px 30px -10px #0000004f">
       <SFC v-bind="sfc" w595pt />
-      <div v-if="!active" absolute inset-0 col fcc op60><img w20 mb4 src="./assets/github.svg" />将 docx 文件或文件夹拖拽至此</div>
+      <div v-if="!active" absolute inset-0 col fcc op60><img w20 mb4 src="./assets/word.svg" />将 docx 文件或文件夹拖拽至此</div>
       <div v-if="isOverDropZone" absolute inset-0 fcc text-100 c-white class="bg-#0000002f" style="backdrop-filter: blur(24px)">+</div>
     </article>
 
