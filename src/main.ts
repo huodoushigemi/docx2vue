@@ -6,22 +6,8 @@ import App from './App.vue'
 window.addEventListener('appinstalled', () => console.log('appinstalled'))
 
 // service worker
-import { useRegisterSW } from 'virtual:pwa-register/vue'
-useRegisterSW({
-  onRegisteredSW() {
-    console.log('onRegisteredSW')
-  },
-  onNeedRefresh() {
-    console.log('onNeedRefresh')
-    if (confirm('网页内容已过时，是否刷新页面')) location.reload()
-  },
-  onRegisterError(error) {
-    console.error('onRegisterError', error)
-  },
-  onOfflineReady() {
-    console.log('onOfflineReady')
-  }
-})
+// import { useRegisterSW } from 'virtual:pwa-register/vue'
+// useRegisterSW({ onNeedRefresh: () => confirm('网页内容已过时，是否刷新页面') && location.reload() })
 
 VueRevealEffect.setDefaultProps({
   borderWidth: 2,

@@ -4,15 +4,16 @@ let event: any
 
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault()
-  e = e
+  event = e
   console.log('👍', 'beforeinstallprompt', e)
+  installed.value = false
 })
 
-const installed = ref(false)
+const installed = ref(true)
 
 window.addEventListener('appinstalled', () => (installed.value = true))
 
 export function usePwa() {
-  const prompt = () => event.prompt()
+  const prompt = async () => await event?.prompt()
   return { prompt, installed }
 }

@@ -1,19 +1,19 @@
 <template>
   <header sticky aic spacex4 px4 top-0 w-full h14 box-border bg-white shadow-lg z-9>
     <h1>🔨 Docx To Vue</h1>
-    <img w12 h12 src="https://huodoushigemi.github.io/vue-reveal-effect/assets/Microsoft-Word.80420470.svg" />
+    <img w12 h12 src="./assets/word.svg" />
     <!-- <img w10 src="https://v2.vuejs.org/images/logo.svg" /> -->
     <div flex-1 />
     <img src="https://img.shields.io/github/stars/huodoushigemi/docx2vue.svg?style=flat-square" />
-    <a href="https://github.com/huodoushigemi/doc2vue" target="_blank"><img w10 src="./assets/github.svg" /></a>
-    <Button @click="prompt">下载</Button>
+    <a href="https://github.com/huodoushigemi/docx2vue" target="_blank"><img w10 src="./assets/github.svg" /></a>
+    <Button v-if="!installed" @click="prompt">下载</Button>
   </header>
 
   <main wrap justify-evenly>
     <!-- 预览区 -->
     <article ref="dropRef" relative my4 min-w595pt min-h-842pt bg-white z-1 style="box-shadow: 0px 5px 30px -10px #0000004f">
       <SFC v-bind="sfc" w595pt />
-      <div v-if="!active" absolute inset-0 col fcc op60><img w20 mb4 src="https://huodoushigemi.github.io/vue-reveal-effect/assets/Microsoft-Word.80420470.svg" />将 docx 文件或文件夹拖拽至此</div>
+      <div v-if="!active" absolute inset-0 col fcc op60><img w20 mb4 src="./assets/github.svg" />将 docx 文件或文件夹拖拽至此</div>
       <div v-if="isOverDropZone" absolute inset-0 fcc text-100 c-white class="bg-#0000002f" style="backdrop-filter: blur(24px)">+</div>
     </article>
 
@@ -34,9 +34,6 @@
     </div>
 
     <article min-w75 px4 v-once>
-      <h2>下载</h2>
-      <Button @click="prompt">下载</Button>
-      <div mt1 text-xs c-gray>Windows 64 位</div>
       <h2>示例</h2>
       <Sample v-reveal-effect name="exmaple.doc" desc="示例文件" />
       <Sample v-reveal-effect name="exmaple-img.doc" desc="带图片的示例" />
@@ -47,7 +44,7 @@
   <!-- prettier-ignore -->
   <footer col fcc mt8 h40 bg-gray-300 v-once>
     <p><b>Last updated: {{ last_updated }}</b></p>
-    <p><a c-inherit href="https://github.com/huodoushigemi/doc2vue" target="_blank">Please give a ⭐️ if this project helped you!</a></p>
+    <p><a c-inherit href="https://github.com/huodoushigemi/docx2vue" target="_blank">Please give a ⭐️ if this project helped you!</a></p>
   </footer>
 </template>
 
