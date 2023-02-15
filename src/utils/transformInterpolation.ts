@@ -1,5 +1,5 @@
 import { isGloballyWhitelisted } from '@vue/shared'
-import type { Identifier } from '@babel/types'
+import type { Identifier, Program } from '@babel/types'
 import type GoGoCode from 'gogocode'
 
 type ASTIdentifier = GoGoCode.GoGoAST & { node: Identifier }
@@ -26,33 +26,24 @@ export async function transformInterpolation(text: string, prefix = 'data') {
 export async function transformInterpolation1(text: string) {
   const gogocode = (await import('gogocode')).default
   return text.replace(/\{\{\s*(.+?)\s*\}\}/g, (_, $1) => {
-    const list = [] as ASTIdentifier[]
-    const gogo = gogocode($1)
+    const expression = gogocode($1)
       .find('$_$')
-      .each(item => list.push(item as ASTIdentifier))
+      .each((item: ASTIdentifier) => {
+        const parent = item.parent(0)
 
-    list.forEach((item: ASTIdentifier) => {
-      const parent = item.parent(0)
+        // 过滤全局对象
+        const refed = getRefed(item).name
+        if (refed && isGloballyWhitelisted(refed)) return
 
-      console.log(item.node.name, parent)
-
-      // 过滤全局对象
-      const refed = getRefed(item).name
-      if (refed && isGloballyWhitelisted(refed)) return
-
-      if (parent.node.type == 'MemberExpression' && item.parent(1).node.type != 'MemberExpression') {
-        // parent.empty()
-        // parent.replaceBy(`get('${parent.generate()}')`)
-      } else if (parent.node.type != 'MemberExpression') {
-        // item.replaceBy(`get('${item.node.name}')`)
-        // item.replaceBy('w')
-        // item.empty().remove()
-      }
-    })
-    console.log(123)
-
-    const expression = gogo.root().generate({ isPretty: false }).replace(/;*$/, '')
-    // console.log(expression)
+        if (parent.node.type == 'MemberExpression' && item.parent(1).node.type != 'MemberExpression') {
+          parent.replaceBy(`get('${parent.generate()}')`)
+          parent.replaceBy(parent.node.expression)
+        } else if (parent.node.type != 'MemberExpression') {
+          item.node.name = `get('${item.node.name}')`
+        }
+      })
+      .root()
+      .generate({ isPretty: false })
 
     return `{{ ${expression} }}`
   })
@@ -72,4 +63,12 @@ function getRefed(item: ASTIdentifier): Identifier {
   const parent = item.parent(0)
   if (parent.node.type === 'MemberExpression') return parent.find('$_$')[0].nodePath.node
   else return item.node
+}
+
+export async function isSimpleIdentifier(exp) {
+  const gogocode = (await import('gogocode')).default
+  const program = gogocode(exp).attr('program') as Program
+  if (program.body.length == 1 && program.body[0].type === 'ExpressionStatement') {
+    return ['Identifier', 'MemberExpression'].includes(program.body[0].expression.type)
+  }
 }

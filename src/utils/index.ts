@@ -30,3 +30,13 @@ export async function scanFiles(entries: FileSystemEntry[], files: File[] = []) 
   }
   return files
 }
+
+export function set(k: string, v: unknown = '') {
+  const ks = getPaths(k)
+  while ((k = ks.pop())) (vv => ((v = typeof k === 'number' ? [] : {})[k] = vv))(v)
+  return v
+}
+
+export function getPaths(k) {
+  return k.replace(/\\[(.+?)\\]/, '.$1').split('.')
+}

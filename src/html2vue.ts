@@ -1,6 +1,5 @@
-import { isSimpleIdentifier } from '@vue/compiler-core'
 import { isTextNode } from './docx2html'
-import { transformInterpolation, transformInterpolation1 } from './utils'
+import { transformInterpolation, transformInterpolation1, isSimpleIdentifier, set } from './utils'
 
 export default async function html2vue(document: Document) {
   const isInterpolation = (s: string) => s.match(/\{\{\s*(.*?)\s*\}\}/)?.[1]
@@ -18,14 +17,15 @@ export default async function html2vue(document: Document) {
       const anchor = node.nextSibling
       let exp = isInterpolation(txt)
       if (!exp) continue
-      txt = '{{ x.qqq + aaa }}'
-      exp = isInterpolation(txt)
+      // txt = '{{ aaa.asd }}'
+      // exp = isInterpolation(txt)
       node.textContent = await transformInterpolation1(txt)
       // todo
-      console.log(node.textContent)
-      const vari = isSimpleIdentifier(exp) ? exp : null
+      // console.log(node.textContent)
+      const vari = (await isSimpleIdentifier(exp)) ? exp : null
       if (!vari) continue
       vars.add(vari)
+      console.log(vari)
 
       // 表达式是变量，添加双向绑定
 
@@ -55,7 +55,7 @@ export default {
   props: {
     // 哪些字段可以双向绑定，默认全部
     vmodels: Array,
-    // known data ${JSON.stringify([...vars].reduce((o, k) => ((o[k] = ''), o), {} as any))}
+    // known data ${JSON.stringify([...vars].reduce((o, k) => Object.assign(o, set(k)), {} as any))}
     data: { type: Object, default: () => ({}) }
   },
   computed: {
@@ -70,7 +70,7 @@ export default {
       this.set(prop, target.textContent)
     },
     getPaths(k) {
-      return k.replace(/\[(.+?)\]/, '.$1').split('.')
+      return k.replace(/\\[(.+?)\\]/, '.$1').split('.')
     },
     get(k) {
       return this.getPaths(k).reduce((o, k) => o?.[k], this.data)
