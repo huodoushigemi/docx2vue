@@ -13,11 +13,13 @@ export default async function html2vue(document: Document) {
   for (const el of root.querySelectorAll('*')) {
     for (const node of el.childNodes) {
       if (!isTextNode(node)) continue
-      const txt = node.textContent!.replace('\n', '')
+      let txt = node.textContent!.replace('\n', '')
       const p = node.parentElement!
       const anchor = node.nextSibling
-      const exp = isInterpolation(txt)
+      let exp = isInterpolation(txt)
       if (!exp) continue
+      txt = '{{ x.qqq + aaa }}'
+      exp = isInterpolation(txt)
       node.textContent = await transformInterpolation1(txt)
       // todo
       console.log(node.textContent)
