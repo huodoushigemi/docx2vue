@@ -12,20 +12,15 @@ export default async function html2vue(document: Document) {
   for (const el of root.querySelectorAll('*')) {
     for (const node of el.childNodes) {
       if (!isTextNode(node)) continue
-      let txt = node.textContent!.replace('\n', '')
+      const txt = node.textContent!.replace('\n', '')
       const p = node.parentElement!
       const anchor = node.nextSibling
-      let exp = isInterpolation(txt)
+      const exp = isInterpolation(txt)
       if (!exp) continue
-      // txt = '{{ aaa.asd }}'
-      // exp = isInterpolation(txt)
       node.textContent = await transformInterpolation1(txt)
-      // todo
-      // console.log(node.textContent)
       const vari = (await isSimpleIdentifier(exp)) ? exp : null
       if (!vari) continue
       vars.add(vari)
-      console.log(vari)
 
       // 表达式是变量，添加双向绑定
 
@@ -43,7 +38,7 @@ export default async function html2vue(document: Document) {
         const matched = txt.match(/(.*?)({{.*?}})(.*)/)!
         p.insertBefore(document.createTextNode(matched[1]), anchor)
         p.insertBefore(addAttributes(document.createElement('span'), vari, await transformInterpolation1(matched[2])), anchor)
-        p.insertBefore(document.createTextNode(matched[3]), anchor) // todo
+        p.insertBefore(document.createTextNode(matched[3]), anchor)
       }
     }
   }
@@ -82,7 +77,7 @@ export default {
       this._set(prop, v)
     },
     _set(prop, val) {
-      if (this.$set) this.$set(this.data, prop, target.textContent)
+      if (this.$set) this.$set(this.data, prop, val)
       else this.data[prop] = val
     }
   }

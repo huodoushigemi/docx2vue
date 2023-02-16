@@ -1,0 +1,54 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+}
+
+[contenteditable] {
+  outline: none;
+  transition: box-shadow 0.4s;
+  box-shadow: 0 0 0 10px transparent;
+}
+[contenteditable]:focus {
+  box-shadow: 0 0 0 4px #0078d74f;
+}
+
+:root {
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
+}
+
+.animate__animated {
+  animation-duration: 1s;
+  animation-duration: var(--animate-duration);
+  animation-fill-mode: both;
+}
+
+@keyframes flipInX {
+  0% {
+    animation-timing-function: ease-in;
+    opacity: 0;
+    transform: perspective(400px) rotateX(20deg);
+  }
+  40% {
+    animation-timing-function: ease-in;
+    transform: perspective(400px) rotateX(-10deg);
+  }
+  60% {
+    opacity: 1;
+    transform: perspective(400px) rotateX(5deg);
+  }
+  80% {
+    transform: perspective(400px) rotateX(-2deg);
+  }
+  to {
+    transform: perspective(400px);
+  }
+}
+
+.animate__flipInX {
+  animation-name: flipInX;
+  backface-visibility: visible !important;
+}

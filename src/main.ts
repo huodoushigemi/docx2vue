@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import 'uno.css'
+import './style.css'
 import VueRevealEffect from 'vue-reveal-effect'
 import App from './App.vue'
 

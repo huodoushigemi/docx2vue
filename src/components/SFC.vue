@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import * as vue from 'vue'
-import { App, createApp, defineAsyncComponent, h, ref, watchEffect } from 'vue'
+import { App, createApp, defineAsyncComponent, h, onUpdated, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   sfc: string
