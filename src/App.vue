@@ -3,7 +3,7 @@
     <h1>🔨 Docx To Vue</h1>
     <img w11 h11 src="./assets/word.svg" />
     <div flex-1 />
-    <img src="https://img.shields.io/github/stars/huodoushigemi/docx2vue.svg?style=for-the-badge" />
+    <a href="https://github.com/huodoushigemi/docx2vue" target="_blank"><img src="https://img.shields.io/github/stars/huodoushigemi/docx2vue.svg?style=for-the-badge" /></a>
     <a href="https://github.com/huodoushigemi/docx2vue" target="_blank"><img w10 src="./assets/github.svg" /></a>
     <Button v-if="!installed" @click="prompt">下载</Button>
   </header>
@@ -24,19 +24,21 @@
       <Button v-if="files.length" ml2 mt4 mb2 @click=";(files = []), (sfc = null), (active = null)">X</Button>
       <!-- 文件列表 -->
       <template v-for="(file, i) in files" :key="i">
-        <div aic px4 mb1 leading-8 cursor-pointer class="bg-#80808033 hover:bg-#8080804f" :class="file == active && 'bg-#0078d72f!'" v-reveal-effect @click="renderDocx(file)">
+        <div aic pl4 mb1 h14 leading-8 cursor-pointer class="bg-#80808033 hover:bg-#8080804f" :class="file == active && 'bg-#00162733!'" v-reveal-effect @click="renderDocx(file)">
           <img w8 py2 mr4 src="./assets/vue.svg" />
           {{ file.webkitRelativePath.replace('.docx', '.vue') }}
-          <button mla op-30 hover:op-60 @click.stop="downloadVue(file)">下载</button>
+          <div mla box-border leading-0 class="bg-#8080801a hover:bg-#80808066" @click.stop="downloadVue(file)">
+            <img h14 scale-75 op40 hover="scale-85 op80" src="./assets/round_down.svg" alt="download" title="download" />
+          </div>
         </div>
       </template>
     </div>
 
     <article min-w75 px4 v-once>
       <h2>示例</h2>
-      <Sample v-reveal-effect name="exmaple.doc" desc="示例文件" url="https://raw.githubusercontent.com/huodoushigemi/docx2vue/2540a8a29805ca143fe8e916b88f985a99a23ccb/docs/assets/vue-5532db34.svg" @preview="renderDocx" />
-      <Sample v-reveal-effect name="exmaple-img.doc" desc="带图片的示例" url="https://raw.githubusercontent.com/huodoushigemi/docx2vue/2540a8a29805ca143fe8e916b88f985a99a23ccb/docs/assets/vue-5532db34.svg" @preview="renderDocx" />
-      <Sample v-reveal-effect name="exmaple-more.doc" desc="更多的示例" url="https://raw.githubusercontent.com/huodoushigemi/docx2vue/2540a8a29805ca143fe8e916b88f985a99a23ccb/docs/assets/vue-5532db34.svg" @preview="renderDocx" />
+      <Sample v-reveal-effect name="exmaple.doc" desc="示例文件" :url="exmplaes[0]" @preview="renderDocx" />
+      <Sample v-reveal-effect name="exmaple-img.doc" desc="带图片的示例" :url="exmplaes[1]" @preview="renderDocx" />
+      <Sample v-reveal-effect name="exmaple-more.doc" desc="更多的示例" :url="exmplaes[2]" @preview="renderDocx" />
     </article>
   </main>
 
@@ -72,6 +74,8 @@ const MonacoEditor = defineAsyncComponent(async () => {
   }
   return import('monaco-editor-vue3')
 })
+
+const exmplaes = ['1', '2', '3'].map(e => new URL(`./assets/${e}.docx`, import.meta.url).href)
 
 const last_updated = new Date(__DATE__).toLocaleString()
 const { prompt, installed } = usePwa()

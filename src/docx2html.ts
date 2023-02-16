@@ -4,6 +4,7 @@ export default async function docx2html(file: File) {
   const container = document.createElement('div')
   await renderAsync(file, container, void 0, { inWrapper: false, useBase64URL: true })
 
+  // Merge HTMLSpanElement of same attributes
   for (const el of container.querySelectorAll('*')) {
     for (let child = el.firstChild; (child = child?.nextSibling); ) {
       if (isMergeable(child, child.previousSibling)) {
@@ -12,6 +13,9 @@ export default async function docx2html(file: File) {
       }
     }
   }
+
+  // Wait for picture loading to complete
+  await Promise.all([...container.querySelectorAll('img')].map(e => new Promise(s => ((e.onload = s), (e.onerror = s)))))
 
   return container.innerHTML
 }
