@@ -36,7 +36,7 @@ export default defineConfig({
       presets: [presetUno(), presetAttributify()]
     }),
     VitePWA({
-      registerType: 'autoUpdate',
+      // registerType: 'autoUpdate',
       manifest: {
         name: 'DoxToVue',
         short_name: 'docx2vue',
