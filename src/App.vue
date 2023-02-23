@@ -38,7 +38,7 @@
       <h2>示例</h2>
       <Sample v-reveal-effect name="exmaple.doc" desc="示例文件" :url="exmplaes[0]" @preview="renderDocx" />
       <Sample v-reveal-effect name="exmaple-img.doc" desc="带图片的示例" :url="exmplaes[1]" @preview="renderDocx" />
-      <Sample v-reveal-effect name="exmaple-more.doc" desc="更多的示例" :url="exmplaes[2]" @preview="renderDocx" />
+      <!-- <Sample v-reveal-effect name="exmaple-more.doc" desc="更多的示例" :url="exmplaes[2]" @preview="renderDocx" /> -->
     </article>
   </main>
 
