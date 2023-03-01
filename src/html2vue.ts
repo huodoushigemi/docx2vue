@@ -1,6 +1,6 @@
-import { normalizeStyle, parseStringStyle, stringifyStyle } from '@vue/shared'
+import { normalizeStyle, stringifyStyle } from '@vue/shared'
 import { isTextNode } from './docx2html'
-import { transformInterpolation, transformInterpolation1, isSimpleIdentifier, set } from './utils'
+import { transformInterpolation1, isSimpleIdentifier, set } from './utils'
 
 export default async function html2vue(document: Document) {
   const isInterpolation = (s: string) => s.match(/\{\{\s*(.*?)\s*\}\}/)?.[1]

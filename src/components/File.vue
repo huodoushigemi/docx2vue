@@ -22,6 +22,7 @@ const emits = defineEmits<{
 async function file() {
   const blob = await (await window.fetch(props.url)).blob()
   const file = new File([blob], props.name, { type: blob.type })
+  Object.defineProperty(file, 'webkitRelativePath', { value: props.name })
   return file
 }
 

@@ -12,7 +12,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite-plugin-pwa/client"]
+    "types": ["vite-plugin-pwa/client", "jest"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "global.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "global.d.ts"]
 }
