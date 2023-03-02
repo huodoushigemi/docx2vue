@@ -1,8 +1,8 @@
 ## Docx To Vue
 
-- 一个可批量将 docx 文件转 vue 文件的工具
-- 支持在 word 文档中使用 `模板语法`，并自动与数据双向绑定
-- 支持 **PWA**
+- A tool that can batch convert docx files to vue files
+- Support the use of `template syntax` in word documents and automatic two-way binding with data
+- Support **PWA**
 
 ## 🌈 Demo
 

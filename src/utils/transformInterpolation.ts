@@ -37,6 +37,7 @@ export async function transformInterpolation1(text: string) {
 
         if (parent.node.type == 'MemberExpression' && item.parent(1).node.type != 'MemberExpression') {
           parent.replaceBy(`get('${parent.generate()}')`)
+          // @ts-ignore
           parent.replaceBy(parent.node.expression)
         } else if (parent.node.type != 'MemberExpression') {
           item.node.name = `get('${item.node.name}')`
@@ -59,13 +60,13 @@ function isRefed(item: ASTIdentifier) {
   }
 }
 
-function getRefed(item: ASTIdentifier): Identifier {
+export function getRefed(item: ASTIdentifier): Identifier {
   const parent = item.parent(0)
   if (parent.node.type === 'MemberExpression') return parent.find('$_$')[0].nodePath.node
   else return item.node
 }
 
-export async function isSimpleIdentifier(exp) {
+export async function isSimpleIdentifier(exp: string) {
   const gogocode = (await import('gogocode')).default
   const program = gogocode(exp).attr('program') as Program
   if (program.body.length == 1 && program.body[0].type === 'ExpressionStatement') {

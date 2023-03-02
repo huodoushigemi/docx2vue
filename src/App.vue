@@ -36,9 +36,9 @@
 
     <article min-w75 px4 v-once>
       <h2>示例</h2>
-      <Sample v-reveal-effect name="exmaple.doc" desc="示例文件" :url="exmplaes[0]" @preview="renderDocx" />
-      <Sample v-reveal-effect name="exmaple-img.doc" desc="带图片的示例" :url="exmplaes[1]" @preview="renderDocx" />
-      <Sample v-reveal-effect name="exmaple-more.doc" desc="更多的示例" :url="exmplaes[2]" @preview="renderDocx" />
+      <Sample v-reveal-effect name="exmaple.docx" desc="示例文件" :url="exmplaes[0]" @preview="previewExmaple" />
+      <Sample v-reveal-effect name="exmaple-img.docx" desc="带图片的示例" :url="exmplaes[1]" @preview="previewExmaple" />
+      <!-- <Sample v-reveal-effect name="exmaple-more.doc" desc="更多的示例" :url="exmplaes[2]" @preview="previewExmaple" /> -->
     </article>
   </main>
 
@@ -134,5 +134,10 @@ async function downloadVues() {
   for (const file of files.value) {
     await downloadVue(file)
   }
+}
+
+function previewExmaple(file: File) {
+  files.value = [file]
+  renderDocx(file)
 }
 </script>
